@@ -1,16 +1,16 @@
 // Spiel starten
 document.addEventListener("DOMContentLoaded", function (event) {
-    createSpielfeld();
+    createMap();
     var startButton = document.getElementById('start');
     startButton.click(function () {
-        startSpiel();
+        startGame();
     });
 });
 
 var snake = {
     position: [],
     size: 3,
-    richtung: "rechts",
+    richtung: "unten",
     aktiv: true
 };
 
@@ -19,20 +19,24 @@ var futter = {
     verfuegbar: false
 };
 
-var bildpunkte = 20;
-var punkte = 0;
-var laenge = 0;
-var geschwindigkeit = 10;
+var columns = 30;
+var score = 0;
+var display_size = 0;
+var speed = 10;
 
-function createSpielfeld() {
-    var size = bildpunkte;
-    var spielfeld = document.getElementById('spielfeld');
-    var row = document.createElement('div');
+function createMap() {
 
-    for (var i = 0; i < size; i++) {
-        row.innerHTML = spielfeld;
-    }
 
-    return row;
+}
+
+
+
+function moveSnake() {
+
+
+}
+
+
+function startGame() {
 
 }
