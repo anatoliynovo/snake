@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css?family=Gugi');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+body {
+    margin: auto;
+    background: black;
+}
+
+#titel {
+    margin-top: 2%;
+    padding-bottom: 1%;
+    text-align: center;
+    font-size: 80px;
+    color: white;
+    font-family: 'Gugi', cursive;
+}
+
+#start {
+    background: blanchedalmond;
+    margin-left: 15%;
+    border-radius: 100%;
+    border: 5px solid orange;
+    width: 80px;
+    height: 80px;
+    font-weight: bolder;
+    font-family: 'Gugi', cursive;
+}
+
+#score {
+    margin-left: 25%;
+    text-align: left;
+    color: white;
+    font-size: 25px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#laenge {
+    margin-top: 2%;
+    margin-left: 10%;
+    text-align: center;
+    color: white;
+    font-size: 25px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.spielfeld {
+    width: 600px;
+    height: 400px;
+    margin: 0 auto;
+    margin-top: 2%;
+    border: 10px solid rgb(80, 167, 72);
+    box-sizing: content-box;
+    background: white;
+}
+
+#snake {
+    width: 20px;
+    height: 20px;
+    background: gold;
+    box-sizing: border-box;
+}
