@@ -15,7 +15,7 @@
   <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="initialize()">
 
   <div class="container">
     <header>
@@ -31,6 +31,13 @@
   </div>
 
   <script type="text/javascript" src="js/main.js"></script>
+
+  <script>
+    function initialize() {
+      var map = document.getElementById('map');
+      map.appendChild(createMap());
+    }
+  </script>
 
 </body>
 

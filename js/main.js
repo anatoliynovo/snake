@@ -1,22 +1,18 @@
 // Spiel starten
-document.addEventListener("DOMContentLoaded", function (event) {
-    createMap();
-    var startButton = document.getElementById('start');
-    startButton.click(function () {
-        startGame();
-    });
+var startButton = document.getElementById('start');
+startButton.click(function() {
+	startGame();
 });
 
 var snake = {
-    position: [],
-    size: 3,
-    richtung: "unten",
-    aktiv: true
+	position: [],
+	size: 3,
+	richtung: 'unten'
 };
 
-var futter = {
-    position: [],
-    verfuegbar: false
+var snack = {
+	position: [],
+	available: false
 };
 
 var columns = 30;
@@ -25,18 +21,12 @@ var display_size = 0;
 var speed = 10;
 
 function createMap() {
-
-
+	var map = document.getElementById('map');
+	map = map + '<div></div>';
 }
 
+function control() {}
 
+function moveSnake() {}
 
-function moveSnake() {
-
-
-}
-
-
-function startGame() {
-
-}
+function startGame() {}
