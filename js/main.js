@@ -124,9 +124,8 @@ function moveSnake(key) {
 			console.log(snake_y);
 			break;
 
-
 	}
-
+	key.preventDefault();
 }
 
 // Funktion zum Start des Spiels
