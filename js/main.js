@@ -1,15 +1,12 @@
-// Map erstellen und Spiel starten 
+// Map erstellen
 $(document).ready(function () {
 	createMap();
-	$("#start").click(function () {
+	$(".start").click(function () {
+		//Button deaktivieren nach dem ersten Klick
+		$(this).prop('disabled', 'disabled');
+		//Spiel starten
 		gameStart();
 	});
-});
-
-// Spiel starten
-var startButton = document.getElementById('start');
-startButton.click(function () {
-	startGame();
 });
 
 var snake = {
@@ -33,6 +30,7 @@ var counter_row = 1;
 var counter_column = 1;
 var mapSize = columnsMap;
 
+// Funktion zum Kreieren der Map
 function createMap() {
 
 	for (var i = 0; i < mapSize; i++) {
@@ -62,12 +60,19 @@ function control() {}
 
 function moveSnake() {}
 
+
+// Funktion zum Start des Spiels
 function gameStart() {
 
 	score = 0;
 	display_size = 0;
 
+	// Score anzeigen
 	$('#points').text(score);
+	// Länge anzeigen
 	$('#size_number').text(display_size);
+	// Head anzeigen
+	$('.columns:nth-child(15) .rows:nth-child(14').append('<div id="snake_head"></div>');
+
 
 }
