@@ -53,12 +53,23 @@ body {
 	background: white;
 }
 
-.point {
+.columns {
 	box-sizing: border-box;
 	width: 20px;
 	height: 20px;
 }
 
-.snake_point {
+.rows {
+	position: absolute;
+	box-sizing: border-box;
+	width: 20px;
+	height: 20px;
+}
+
+#snake {}
+
+#snake_head {
+	width: 20px;
+	height: 20px;
 	background: red;
 }
