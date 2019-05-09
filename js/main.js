@@ -64,6 +64,10 @@ function moveSnake() {}
 
 function gameStart() {
 
+	score = 0;
+	display_size = 0;
 
+	$('#points').text(score);
+	$('#size_number').text(display_size);
 
 }
