@@ -31,6 +31,7 @@ var counter_row = 1;
 var counter_column = 1;
 var mapSize = columnsMap;
 
+
 // Funktion zum Kreieren der Map
 function createMap() {
 
@@ -59,7 +60,6 @@ function createMap() {
 
 function gameProcess() {
 	setTimeout(function () {
-		control();
 		moveSnake();
 	});
 }
@@ -69,7 +69,28 @@ function control() {
 }
 
 function moveSnake() {
+	var arrow = {
+		left: 37,
+		up: 38,
+		right: 39,
+		down: 40
+	};
+	var snake = document.querySelector('#snake_head');
+	var style = window.getComputedStyle(snake);
+	var snake_x = style.marginLeft.substring(0, 3);
+	var snake_y = style.marginTop.substring(0, 3);
 
+
+	$(document).keydown(function (e) {
+
+		switch (e.keyCode) {
+			case arrow.left:
+				$('#snake_head').animate({
+					marginLeft: '-=30'
+				});
+		}
+
+	});
 
 }
 
@@ -88,5 +109,4 @@ function gameStart() {
 	$('.columns:nth-child(' + snake.position_x + ') .rows:nth-child(' + snake.position_y + ')').append('<div id="snake_head"></div>');
 	// Spieldurchlauf starten
 	gameProcess();
-
 }
