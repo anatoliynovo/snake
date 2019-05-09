@@ -10,7 +10,8 @@ $(document).ready(function () {
 });
 
 var snake = {
-	position: [15, 15],
+	position_x: 15,
+	position_y: 14,
 	size: 3,
 	direction: 'down'
 };
@@ -56,9 +57,21 @@ function createMap() {
 
 }
 
-function control() {}
+function gameProcess() {
+	setTimeout(function () {
+		control();
+		moveSnake();
+	});
+}
 
-function moveSnake() {}
+function control() {
+
+}
+
+function moveSnake() {
+
+
+}
 
 
 // Funktion zum Start des Spiels
@@ -72,7 +85,8 @@ function gameStart() {
 	// Länge anzeigen
 	$('#size_number').text(display_size);
 	// Head anzeigen
-	$('.columns:nth-child(15) .rows:nth-child(14').append('<div id="snake_head"></div>');
-
+	$('.columns:nth-child(' + snake.position_x + ') .rows:nth-child(' + snake.position_y + ')').append('<div id="snake_head"></div>');
+	// Spieldurchlauf starten
+	gameProcess();
 
 }
