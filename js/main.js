@@ -133,7 +133,7 @@ function gameProcess() {
 
 function moveSnake() {
 	setInterval(function() {
-		// Tail vom Snake sichern
+		// Tail vom Snake (urspünglicher Head) sichern
 		var snake_tail_x = snake.position_x;
 		var snake_tail_y = snake.position_y;
 
@@ -201,6 +201,7 @@ function gameStart() {
 	snake.available = true;
 
 	// Bewegungsrichtung am Anfang
+	// kurz warten, bis der Snake sich automatisch in die festgelegte Richtung bewegen darf
 	setTimeout(function() {
 		key_state[3] = true;
 	}, 500);
