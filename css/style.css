@@ -111,14 +111,8 @@ body {
 	background: red;
 }
 
-#snack {
+.snack {
 	width: 20px;
 	height: 20px;
 	background: blue;
-}
-
-.tmp {
-	width: 600px;
-	height: 600px;
-
 }

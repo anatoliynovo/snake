@@ -8,9 +8,9 @@ $(document).ready(function() {
 	createMap();
 	initializeKeyboard();
 	$('.start').click(function() {
-		//Button deaktivieren nach dem ersten Klick
+		// Start-Button deaktivieren nach dem ersten Klick
 		$(this).prop('disabled', 'disabled');
-		// Smooth Scrolling nach unten
+		// Smooth Scrolling nach ganz unten
 		$('html,body').animate(
 			{
 				scrollTop: $(document).height()
@@ -27,6 +27,7 @@ $(document).ready(function() {
 	});
 });
 
+// Snake
 var snake = {
 	position_x: 1,
 	position_y: 1,
@@ -35,11 +36,7 @@ var snake = {
 	head: 'snake_head'
 };
 
-var snack = {
-	position: [],
-	available: false
-};
-
+// Futter
 var snack = {
 	position: [],
 	available: false
