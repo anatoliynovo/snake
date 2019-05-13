@@ -20,13 +20,23 @@
 <body>
 
   <div class="container">
-    <button class="start">Start</button>
+    <button class="start"></button>
     <div class="row">
       <h1 id="titel">Snake</h1>
       <span id="score">Score: <span id="score_number"></span></span>
       <span id="size">Länge: <span id="size_number"></span></span>
     </div>
-    <div id="map"></div>
+
+    <div id="map">
+      <div class="popup">
+        <div class="header-popup">
+          <h2>Du hast leider verloren &#128534</h2>
+        </div>
+        <div class="text-popup">
+          <p>Schaade, probiere es doch nochmal!</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script type="text/javascript" src="js/main.js"></script>

@@ -7,9 +7,14 @@ $('span').hide();
 $(document).ready(function() {
 	createMap();
 	initializeKeyboard();
+	initializeEverything();
+});
+
+function initializeEverything() {
+	$('.start').text('START');
 	$('.start').click(function() {
 		// Start-Button deaktivieren nach dem ersten Klick
-		$(this).prop('disabled', 'disabled');
+		$('.start').prop('disabled', true);
 		// Smooth Scrolling nach ganz unten
 		$('html,body').animate(
 			{
@@ -22,10 +27,10 @@ $(document).ready(function() {
 		$('#map').show();
 		$('span').show();
 
-		//Spiel starten
+		// Spiel starten
 		gameStart();
 	});
-});
+}
 
 // Snake
 var snake = {
@@ -58,6 +63,9 @@ var key_up = 38;
 var key_right = 39;
 var key_down = 40;
 var key_state = [ false, false, false, false ];
+
+// Pop Up anzeigen, wenn Kollision stattgefunden hat
+var popup = $('.popup');
 
 // Funktion zum Kreieren der Map
 function createMap() {
@@ -132,6 +140,7 @@ function gameProcess() {
 
 function moveSnake() {
 	setInterval(function() {
+		check4Collisions();
 		// Tail vom Snake (urspünglicher Head) sichern
 		var snake_tail_x = snake.position_x;
 		var snake_tail_y = snake.position_y;
@@ -180,19 +189,33 @@ function moveSnake() {
 			);
 			$('.columns:nth-child(' + snake_tail_y + ') .rows:nth-child(' + snake_tail_x + ')').removeClass(snake.head);
 			console.log('unten: ' + snake.position_y);
-			console.log('available: ' + snake.available);
 		}
-		check4Collisions();
 	}, speed);
 }
 
 function check4Collisions() {
-	if (snake.position_y > 29) {
+	if (snake.position_y == 1 || snake.position_y == 31 || snake.position_x == 1 || snake.position_x == 31) {
 		snake.available = false;
+		key_state = false;
+		setTimeout(function() {
+			gameOver();
+		}, 200);
 	}
 }
 
-function gameOver() {}
+function gameOver() {
+	popup.show();
+	$('.rows').removeClass(snake.head);
+	// Start-Button wieder aktivieren
+	var startButton = $('.start');
+	startButton.prop('disabled', false);
+	startButton.text('RESTART');
+	startButton.click(function() {
+		popup.hide();
+		initializeEverything();
+		console.log('RESTART Button is clicked');
+	});
+}
 
 // Funktion zum Starten des Spiels
 function gameStart() {

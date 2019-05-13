@@ -116,3 +116,27 @@ body {
 	height: 20px;
 	background: blue;
 }
+
+.popup {
+	display: none;
+	position: absolute;
+	left: 46%;
+	top: 60%;
+	width: 400px;
+	background: #fff;
+	box-shadow: 0 5px 20px 7px rgba(0, 0, 0, .3);
+	padding: 20px 20px;
+
+}
+
+.header-popup {
+	height: 40px;
+	margin-top: 0;
+	line-height: 30px;
+	text-align: center;
+}
+
+.text-popup {
+	text-align: center;
+	margin-top: 5%;
+}
