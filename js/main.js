@@ -32,7 +32,7 @@ var snake = {
 	position_x: 1,
 	position_y: 1,
 	size: 1,
-	available: false,
+	available: true,
 	head: 'snake_head'
 };
 
@@ -42,7 +42,7 @@ var snack = {
 	available: false
 };
 
-var columnsMap = 30; // gesamte Anzahl der columns
+var totalRows = 30; // Gesamtanzahl der Reihen
 var score = 0; // Score-Zähler
 var display_size = 0; // Länge-Zähler
 var speed = 300; // Geschwindigkeit des Schalangenkopfs
@@ -50,7 +50,7 @@ var speed = 300; // Geschwindigkeit des Schalangenkopfs
 var counter = 0; // Zähler für Pixeln (20px)
 var counter_column = 1; // id für columns
 var counter_row = 0; // id für rows
-var mapSize = columnsMap;
+var mapSize = totalRows;
 
 // Tastatur Eingabe
 var key_left = 37;
@@ -125,7 +125,9 @@ function initializeKeyboard() {
 }
 
 function gameProcess() {
-	moveSnake();
+	if (snake.available) {
+		moveSnake();
+	}
 }
 
 function moveSnake() {
@@ -133,7 +135,6 @@ function moveSnake() {
 		// Tail vom Snake (urspünglicher Head) sichern
 		var snake_tail_x = snake.position_x;
 		var snake_tail_y = snake.position_y;
-
 		// Score und Länge-Zähler fangen an zu zählen, wenn einer der Tasten betätigt wurde
 		if (key_state[0] || key_state[1] || key_state[2] || key_state[3]) {
 			display_size = display_size + 1;
@@ -141,7 +142,6 @@ function moveSnake() {
 			$('#size_number').text(display_size);
 			$('#score_number').text(score);
 		}
-
 		// links
 		if (key_state[0]) {
 			snake.position_x = snake.position_x - 1;
@@ -180,9 +180,19 @@ function moveSnake() {
 			);
 			$('.columns:nth-child(' + snake_tail_y + ') .rows:nth-child(' + snake_tail_x + ')').removeClass(snake.head);
 			console.log('unten: ' + snake.position_y);
+			console.log('available: ' + snake.available);
 		}
+		check4Collisions();
 	}, speed);
 }
+
+function check4Collisions() {
+	if (snake.position_y > 29) {
+		snake.available = false;
+	}
+}
+
+function gameOver() {}
 
 // Funktion zum Starten des Spiels
 function gameStart() {
