@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Gugi');
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
+/********* Main *********/
+
 body {
 	margin: auto;
 	background: black;
@@ -15,6 +17,33 @@ body {
 	font-family: 'Gugi', cursive;
 }
 
+.popup {
+	display: none;
+	position: absolute;
+	left: 46%;
+	top: 60%;
+	width: 400px;
+	background: #fff;
+	box-shadow: 0 5px 20px 7px rgba(0, 0, 0, .3);
+	padding: 20px 20px;
+
+}
+
+.header-popup {
+	height: 40px;
+	margin-top: 0;
+	line-height: 30px;
+	text-align: center;
+}
+
+.text-popup {
+	text-align: center;
+	margin-top: 5%;
+}
+
+/****************************/
+
+/********* Start Button *********/
 .start {
 	position: absolute;
 	background: blanchedalmond;
@@ -63,6 +92,9 @@ body {
 	cursor: not-allowed;
 }
 
+/****************************/
+
+/********* Indicator for score and size *********/
 #score {
 	position: absolute;
 	margin-top: 11%;
@@ -81,6 +113,11 @@ body {
 	font-size: 25px;
 	font-family: 'Montserrat', sans-serif;
 }
+
+/****************************/
+
+
+/********* Map + related components (rows+columns)  *********/
 
 #map {
 	width: 600px;
@@ -105,6 +142,10 @@ body {
 	height: 20px;
 }
 
+/****************************/
+
+/********* Snake and Snack *********/
+
 .snake_head {
 	width: 20px;
 	height: 20px;
@@ -117,26 +158,4 @@ body {
 	background: blue;
 }
 
-.popup {
-	display: none;
-	position: absolute;
-	left: 46%;
-	top: 60%;
-	width: 400px;
-	background: #fff;
-	box-shadow: 0 5px 20px 7px rgba(0, 0, 0, .3);
-	padding: 20px 20px;
-
-}
-
-.header-popup {
-	height: 40px;
-	margin-top: 0;
-	line-height: 30px;
-	text-align: center;
-}
-
-.text-popup {
-	text-align: center;
-	margin-top: 5%;
-}
+/****************************/
