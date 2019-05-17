@@ -147,14 +147,11 @@ body {
 /********* Snake and Snack *********/
 
 .snake_head {
-	width: 20px;
-	height: 20px;
-	background: red;
+	background: rgb(185, 185, 185);
+	border: 5px black solid;
 }
 
-.snack {
-	width: 20px;
-	height: 20px;
+.food {
 	background: blue;
 }
 

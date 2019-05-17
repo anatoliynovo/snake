@@ -8,15 +8,20 @@ $('span').hide();
 var snake = {
 	position_x: 1,
 	position_y: 1,
-	size: 1,
 	available: false,
 	head: 'snake_head'
 };
 
 // Futter
-var snack = {
-	position: [],
-	available: false
+var food = {
+	fclass: 'food'
+};
+
+var walls = {
+	left: 1,
+	top: 31,
+	right: 1,
+	bottom: 31
 };
 
 var totalRows = 30; // Gesamtanzahl der Reihen
@@ -37,7 +42,13 @@ var key_state = [ false, false, false, false ];
 
 // Taktzyklus für Snake
 var cycleTimer;
-var speed = 300; // Geschwindigkeit des Schalangenkopfs
+var gameCounter = 0; // Basis, zählt bei jedem Takt
+var snakeSpeed = 600; // Geschwindigkeit des Schalangenkopfs
+var cycleSpeed = 3000;
+
+// der Weg, den der Snake läuft
+var path_y = [];
+var path_x = [];
 
 // Pop Up anzeigen, wenn Kollision stattgefunden hat
 var popup = $('.popup');
@@ -139,46 +150,55 @@ function gameProcess() {
 	if (snake.available) {
 		resetCycle();
 		startCycle();
-		console.log('alive: ' + snake.available);
 	}
 }
 
 function startCycle() {
+	setSizeCounter();
 	cycleTimer = setInterval(function() {
 		moveSnake();
+		spawnFood();
+		gameCounter++;
+		console.log('gameCounter: ', gameCounter);
 		if (check4Collisions()) {
 			resetCycle();
 			setTimeout(function() {
 				gameOver();
 			}, 300);
 		}
-	}, speed);
+	}, snakeSpeed);
 }
 
 function resetCycle() {
 	clearInterval(cycleTimer);
 }
 
+function setSizeCounter() {
+	// Score und Länge-Zähler fangen an zu zählen, wenn einer der Tasten betätigt wurde
+	setInterval(function() {
+		if (key_state[0] || key_state[1] || key_state[2] || key_state[3]) {
+			display_size = display_size + 1;
+			score = score + 1;
+			$('#size_number').text(display_size);
+			$('#score_number').text(score);
+		}
+	}, cycleSpeed);
+}
+
 function moveSnake() {
 	// Tail vom Snake (urspünglicher Head) sichern
 	var snake_tail_x = snake.position_x;
 	var snake_tail_y = snake.position_y;
-	// Score und Länge-Zähler fangen an zu zählen, wenn einer der Tasten betätigt wurde
-	if (key_state[0] || key_state[1] || key_state[2] || key_state[3]) {
-		display_size = display_size + 1;
-		score = score + 1;
-		$('#size_number').text(display_size);
-		$('#score_number').text(score);
-	}
+
+	path_y.push(snake.position_y);
+	path_x.push(snake.position_x);
+
 	// links
 	if (key_state[0]) {
 		snake.position_x = snake.position_x - 1;
 		$('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')').addClass(
 			snake.head
 		);
-		$('.columns:nth-child(' + snake_tail_y + ') .rows:nth-child(' + snake_tail_x + ')').removeClass(snake.head);
-		console.log('links: ' + snake.position_x);
-		console.log('links -> key_state: ' + key_state[0]);
 	}
 
 	// oben
@@ -187,9 +207,6 @@ function moveSnake() {
 		$('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')').addClass(
 			snake.head
 		);
-		$('.columns:nth-child(' + snake_tail_y + ') .rows:nth-child(' + snake_tail_x + ')').removeClass(snake.head);
-		console.log('oben: ' + snake.position_y);
-		console.log('oben -> key_state: ' + key_state[1]);
 	}
 
 	// rechts
@@ -198,9 +215,6 @@ function moveSnake() {
 		$('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')').addClass(
 			snake.head
 		);
-		$('.columns:nth-child(' + snake_tail_y + ') .rows:nth-child(' + snake_tail_x + ')').removeClass(snake.head);
-		console.log('rechts: ' + snake.position_x);
-		console.log('rechts -> key_state: ' + key_state[2]);
 	}
 
 	// unten
@@ -209,14 +223,20 @@ function moveSnake() {
 		$('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')').addClass(
 			snake.head
 		);
-		$('.columns:nth-child(' + snake_tail_y + ') .rows:nth-child(' + snake_tail_x + ')').removeClass(snake.head);
-		console.log('unten: ' + snake.position_y);
-		console.log('unten -> key_state: ' + key_state[3]);
 	}
+
+	console.log('y: ' + snake.position_y, ',  x: ' + snake.position_x);
+	console.log('PATH y: ' + path_y);
+	console.log('PATH x: ' + path_x);
 }
 
 function check4Collisions() {
-	if (snake.position_y == 1 || snake.position_y == 31 || snake.position_x == 1 || snake.position_x == 30) {
+	if (
+		snake.position_y == walls.left ||
+		snake.position_y == walls.bottom ||
+		snake.position_x == walls.right ||
+		snake.position_x == walls.key_up
+	) {
 		snake.available = false;
 		return key_state;
 	}
@@ -224,20 +244,43 @@ function check4Collisions() {
 
 function gameOver() {
 	popup.show();
-	$('.rows').removeClass(snake.head);
+	$('.rows').removeClass(snake.head, snake.body);
 	// Start-Button wieder aktivieren
 	startButton.prop('disabled', false);
 	startButton.text('RESTART');
 	startButton.click(function() {
 		popup.hide();
+		startButton.text('START');
 		gameStart();
 	});
+}
+
+function spawnFood() {
+	if (gameCounter % 5 == 0) {
+		food_x = Math.floor(Math.random() * 29) + 1;
+		food_y = Math.floor(Math.random() * 29) + 1;
+
+		curdiv = $('.columns:nth-child(' + food_y + ') .rows:nth-child(' + food_x + ')');
+
+		if (!curdiv.hasClass('snake_head')) {
+			curdiv.addClass(food.fclass);
+		}
+	}
+}
+
+function foodCollision() {
+	curdiv = $('.columns:nth-child(' + snake.position_x + ') .rows:nth-child(' + snake.position_y + ')');
+
+	if (curdiv.hasClass('food')) {
+		curdiv.removeClass(food.fclass);
+		console.log('FCLASS class deleted!');
+	}
 }
 
 function gameStart() {
 	// Score- und Laengezaehler auf 0
 	score = 0;
-	display_size = 0;
+	display_size = 1;
 
 	// Anfangsposition des snake_head festlegen
 	snake.position_x = 15;
@@ -259,7 +302,7 @@ function gameStart() {
 	$('#size_number').text(display_size);
 
 	// Head anzeigen
-	$('.columns:nth-child(' + snake.position_x + ') .rows:nth-child(' + snake.position_y + ')');
+	$('.columns:nth-child(' + snake.position_x + ') .rows:nth-child(' + snake.position_y + ')').addClass(snake.head);
 
 	// Spielloop starten
 	gameProcess();
