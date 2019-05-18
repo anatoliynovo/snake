@@ -15,7 +15,24 @@ body {
 	font-size: 80px;
 	color: white;
 	font-family: 'Gugi', cursive;
+	animation: move 3s;
+	-webkit-animation: move 3s;
 }
+
+@keyframes move {
+	from {
+		margin-left: 200%;
+		width: 300%;
+	}
+
+	to {
+		margin-left: -78.5%;
+		width: 200%;
+	}
+}
+
+
+
 
 .popup {
 	display: none;
@@ -47,13 +64,14 @@ body {
 .start {
 	position: absolute;
 	background: blanchedalmond;
-	margin-left: 10%;
-	margin-top: 30%;
+	margin-left: 2%;
+	margin-top: 15%;
 	border-radius: 100%;
 	border: 5px solid orange;
 	width: 150px;
 	height: 150px;
 	font-weight: bolder;
+	font-size: 22px;
 	font-family: 'Gugi', cursive;
 	text-transform: uppercase;
 	overflow: hidden;

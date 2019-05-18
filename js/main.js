@@ -58,9 +58,13 @@ var startButton = $('.start');
 // Map, Score- und Längezähler verbergen, solange nicht auf Start gedrückt wurde
 $('#map').hide();
 $('span').hide();
+$('.start').hide();
 
 // Map erstellen und Tasten einweisen
 $(document).ready(function () {
+	setTimeout(function () {
+		$('.start').fadeIn(1000);
+	}, 2000);
 	createMap();
 	initializeKeyboard();
 	startButton.text('START');
