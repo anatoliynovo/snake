@@ -1,8 +1,3 @@
-// Map, Score- und Längezähler verbergen, solange nicht auf Start gedrückt wurde
-/*
-$('#map').hide();
-$('span').hide();
-*/
 // Snake
 var snake = {
 	position_x: 1,
@@ -59,6 +54,10 @@ var popup = $('.popup');
 
 // Start-Button
 var startButton = $('.start');
+
+// Map, Score- und Längezähler verbergen, solange nicht auf Start gedrückt wurde
+$('#map').hide();
+$('span').hide();
 
 // Map erstellen und Tasten einweisen
 $(document).ready(function () {
@@ -301,7 +300,7 @@ function foodCollision() {
 		addNewSnakeElement();
 		addNewElementCounter--;
 
-		// Background-color auf neutral setzen
+		// Background-color auf blank setzen
 		currElement.css({
 			background: ''
 		});
@@ -354,7 +353,7 @@ function gameOver() {
 }
 
 function gameStart() {
-	// Alle Objekte auf der Map entferen und Hintergrund auf blank zurücksetzen
+	// Alle Objekte auf der Map entfernen und Hintergrund auf blank zurücksetzen
 	$('.columns .rows').removeClass(food.fclass);
 	$('.columns .rows').removeClass(snake.head);
 	$('.columns .rows').css({
@@ -378,7 +377,7 @@ function gameStart() {
 	key_state[2] = false;
 	key_state[3] = true;
 
-	// Arrays leeren, wenn das Spiel neugestartet wird
+	// Arrays (Länge des Sneaks) leeren, wenn das Spiel neugestartet wird
 	path_x = [];
 	path_y = [];
 
@@ -391,6 +390,6 @@ function gameStart() {
 	// Head anzeigen
 	$('.columns:nth-child(' + snake.position_x + ') .rows:nth-child(' + snake.position_y + ')');
 
-	// Spielloop starten
+	// Spielschleife starten
 	gameProcess();
 }
