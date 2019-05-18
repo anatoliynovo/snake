@@ -12,17 +12,27 @@ var snake = {
 	head: 'snake_head'
 };
 
-// Futter
+// Food
 var food = {
 	fclass: 'food'
 };
 
+// Wände
 var wall = {
-	left: 1,
+	left: 0,
 	top: 31,
-	right: 1,
+	right: 0,
 	bottom: 31
 };
+
+// Tastatur Eingabe
+var key = {
+	left: 37,
+	up: 38,
+	right: 39,
+	down: 40
+};
+var key_state = [ false, false, false, false ];
 
 var totalRows = 30; // Gesamtanzahl der Reihen
 var score = 0; // Score-Zähler
@@ -32,13 +42,6 @@ var counter = 0; // Zähler für Pixeln (20px)
 var counter_column = 1; // id für columns
 var counter_row = 0; // id für rows
 var mapSize = totalRows;
-
-// Tastatur Eingabe
-var key_left = 37;
-var key_up = 38;
-var key_right = 39;
-var key_down = 40;
-var key_state = [ false, false, false, false ];
 
 // Taktzyklus für Snake
 var cycleTimer_a;
@@ -107,41 +110,37 @@ function createMap() {
 
 function initializeKeyboard() {
 	$(document).keydown(function(e) {
-		if (e.keyCode == key_left) {
+		if (e.keyCode == key.left) {
 			key_state[0] = true;
-			if (key_state[0] == true) {
-				key_state[1] = false;
-				key_state[2] = false;
-				key_state[3] = false;
-			}
-			console.log(key_left);
+			key_state[1] = false;
+			key_state[2] = false;
+			key_state[3] = false;
+
+			console.log(key.left);
 		}
-		if (e.keyCode == key_up) {
+		if (e.keyCode == key.up) {
 			key_state[1] = true;
-			if (key_state[1] == true) {
-				key_state[0] = false;
-				key_state[2] = false;
-				key_state[3] = false;
-			}
-			console.log(key_up);
+			key_state[0] = false;
+			key_state[2] = false;
+			key_state[3] = false;
+
+			console.log(key.up);
 		}
-		if (e.keyCode == key_right) {
+		if (e.keyCode == key.right) {
 			key_state[2] = true;
-			if (key_state[2] == true) {
-				key_state[0] = false;
-				key_state[1] = false;
-				key_state[3] = false;
-			}
-			console.log(key_right);
+			key_state[0] = false;
+			key_state[1] = false;
+			key_state[3] = false;
+
+			console.log(key.right);
 		}
-		if (e.keyCode == key_down) {
+		if (e.keyCode == key.down) {
 			key_state[3] = true;
-			if (key_state[3] == true) {
-				key_state[0] = false;
-				key_state[1] = false;
-				key_state[2] = false;
-			}
-			console.log(key_down);
+			key_state[0] = false;
+			key_state[1] = false;
+			key_state[2] = false;
+
+			console.log(key.down);
 		}
 		// wenn die Arrow Tasten nicht betätigt wurden, so lassen wie es auf default ist
 		e.preventDefault();
@@ -332,9 +331,10 @@ function gameOver() {
 }
 
 function gameStart() {
-	// Alle Objekte auf der Map entferenn
+	// Alle Objekte auf der Map entferen und Hintergrund auf blank zurücksetzen
 	$('.columns .rows').removeClass(food.fclass);
 	$('.columns .rows').removeClass(snake.head);
+	$('.columns .rows').css({ background: '' });
 
 	// Score- und Laengezaehler auf 0
 	score = 0;
