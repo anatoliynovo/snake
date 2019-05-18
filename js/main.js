@@ -3,7 +3,6 @@
 $('#map').hide();
 $('span').hide();
 */
-
 // Snake
 var snake = {
 	position_x: 1,
@@ -32,7 +31,7 @@ var key = {
 	right: 39,
 	down: 40
 };
-var key_state = [ false, false, false, false ];
+var key_state = [false, false, false, false];
 
 var totalRows = 30; // Gesamtanzahl der Reihen
 var score = 0; // Score-Zähler
@@ -62,16 +61,15 @@ var popup = $('.popup');
 var startButton = $('.start');
 
 // Map erstellen und Tasten einweisen
-$(document).ready(function() {
+$(document).ready(function () {
 	createMap();
 	initializeKeyboard();
 	startButton.text('START');
-	startButton.click(function() {
+	startButton.click(function () {
 		// Start-Button deaktivieren nach dem ersten Klick
 		$('.start').prop('disabled', true);
 		// Smooth Scrolling nach ganz unten
-		$('html,body').animate(
-			{
+		$('html,body').animate({
 				scrollTop: $(document).height()
 			},
 			2000
@@ -109,7 +107,7 @@ function createMap() {
 }
 
 function initializeKeyboard() {
-	$(document).keydown(function(e) {
+	$(document).keydown(function (e) {
 		if (e.keyCode == key.left) {
 			key_state[0] = true;
 			key_state[1] = false;
@@ -150,17 +148,17 @@ function initializeKeyboard() {
 function addNewSnakeElement() {
 	var newElement = $(
 		'.columns:nth-child(' +
-			path_y.slice(addNewElementCounter)[0] +
-			') .rows:nth-child(' +
-			path_x.slice(addNewElementCounter)[0] +
-			')'
+		path_y.slice(addNewElementCounter)[0] +
+		') .rows:nth-child(' +
+		path_x.slice(addNewElementCounter)[0] +
+		')'
 	).addClass(snake.head);
 	return newElement;
 }
 
 function setSizeCounter() {
 	// Score und Länge-Zähler fangen an zu zählen, wenn einer der Tasten betätigt wurde
-	cycleTimer_b = setInterval(function() {
+	cycleTimer_b = setInterval(function () {
 		if (key_state[0] || key_state[1] || key_state[2] || key_state[3]) {
 			display_size = display_size + 1;
 			score = score + 1;
@@ -192,10 +190,10 @@ function moveSnake() {
 		);
 		$(
 			'.columns:nth-child(' +
-				path_y.slice(addNewElementCounter)[0] +
-				') .rows:nth-child(' +
-				path_x.slice(addNewElementCounter)[0] +
-				')'
+			path_y.slice(addNewElementCounter)[0] +
+			') .rows:nth-child(' +
+			path_x.slice(addNewElementCounter)[0] +
+			')'
 		).removeClass(snake.head);
 	}
 
@@ -207,10 +205,10 @@ function moveSnake() {
 		);
 		$(
 			'.columns:nth-child(' +
-				path_y.slice(addNewElementCounter)[0] +
-				') .rows:nth-child(' +
-				path_x.slice(addNewElementCounter)[0] +
-				')'
+			path_y.slice(addNewElementCounter)[0] +
+			') .rows:nth-child(' +
+			path_x.slice(addNewElementCounter)[0] +
+			')'
 		).removeClass(snake.head);
 	}
 
@@ -222,10 +220,10 @@ function moveSnake() {
 		);
 		$(
 			'.columns:nth-child(' +
-				path_y.slice(addNewElementCounter)[0] +
-				') .rows:nth-child(' +
-				path_x.slice(addNewElementCounter)[0] +
-				')'
+			path_y.slice(addNewElementCounter)[0] +
+			') .rows:nth-child(' +
+			path_x.slice(addNewElementCounter)[0] +
+			')'
 		).removeClass(snake.head);
 	}
 
@@ -237,10 +235,10 @@ function moveSnake() {
 		);
 		$(
 			'.columns:nth-child(' +
-				path_y.slice(addNewElementCounter)[0] +
-				') .rows:nth-child(' +
-				path_x.slice(addNewElementCounter)[0] +
-				')'
+			path_y.slice(addNewElementCounter)[0] +
+			') .rows:nth-child(' +
+			path_x.slice(addNewElementCounter)[0] +
+			')'
 		).removeClass(snake.head);
 	}
 
@@ -256,14 +254,14 @@ function gameProcess() {
 
 function startCycle() {
 	setSizeCounter();
-	cycleTimer_a = setInterval(function() {
+	cycleTimer_a = setInterval(function () {
 		moveSnake();
 		foodCollision();
 		spawnFood();
 		gameCounter++;
 		if (checkWallCollision() || selfCollision()) {
 			resetCycle();
-			setTimeout(function() {
+			setTimeout(function () {
 				gameOver();
 			}, 300);
 		}
@@ -283,7 +281,9 @@ function spawnFood() {
 		var randomElement = $('.columns:nth-child(' + food_y + ') .rows:nth-child(' + food_x + ')');
 
 		// Verschiede Food Farben erzeugen
-		randomElement.css({ background: '#' + randomColor });
+		randomElement.css({
+			background: '#' + randomColor
+		});
 
 		if (!randomElement.hasClass('snake_head')) {
 			randomElement.addClass(food.fclass);
@@ -302,7 +302,9 @@ function foodCollision() {
 		addNewElementCounter--;
 
 		// Background-color auf neutral setzen
-		currElement.css({ background: '' });
+		currElement.css({
+			background: ''
+		});
 		// 5 Punkte pro Food
 		score = score + 5;
 		// Länge um 1 inkrementieren, wenn Food berührt wurde
@@ -317,7 +319,7 @@ function selfCollision() {
 	// gibt true bei Kollision mit dem Body vom Snake
 	var isCollided = false;
 
-	$.each(path_x, function(i) {
+	$.each(path_x, function (i) {
 		if (snake.position_x == path_x[i] && snake.position_y == path_y[i]) {
 			isCollided = true;
 		}
@@ -344,7 +346,7 @@ function gameOver() {
 	// Start-Button wieder aktivieren
 	startButton.prop('disabled', false);
 	startButton.text('RESTART');
-	startButton.click(function() {
+	startButton.click(function () {
 		popup.hide();
 		startButton.text('START');
 		gameStart();
@@ -355,7 +357,9 @@ function gameStart() {
 	// Alle Objekte auf der Map entferen und Hintergrund auf blank zurücksetzen
 	$('.columns .rows').removeClass(food.fclass);
 	$('.columns .rows').removeClass(snake.head);
-	$('.columns .rows').css({ background: '' });
+	$('.columns .rows').css({
+		background: ''
+	});
 
 	// Score- und Laengezaehler auf 0
 	score = 0;

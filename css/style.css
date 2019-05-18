@@ -95,10 +95,19 @@ body {
 /****************************/
 
 /********* Indicator for score and size *********/
+#scoreboard {
+	position: relative;
+	height: auto;
+	width: 50%;
+	margin-left: 40%;
+	padding-top: 10%;
+	margin-bottom: -4.5%;
+}
+
 #score {
 	position: absolute;
-	margin-top: 11%;
-	margin-left: 35%;
+	margin-top: 6.5%;
+	margin-left: 37.2%;
 	text-align: left;
 	color: white;
 	font-size: 25px;
@@ -106,12 +115,23 @@ body {
 }
 
 #size {
-	margin-top: 12%;
-	margin-left: 35%;
+	position: relative;
+	margin-top: 9%;
+	margin-left: -20%;
 	text-align: center;
 	color: white;
 	font-size: 25px;
 	font-family: 'Montserrat', sans-serif;
+}
+
+#score_number {
+	font-size: 25px;
+	font-family: 'Gugi', cursive;
+}
+
+#size_number {
+	font-size: 25px;
+	font-family: 'Gugi', cursive;
 }
 
 /****************************/
@@ -123,6 +143,7 @@ body {
 	width: 600px;
 	height: 600px;
 	margin-left: 35%;
+	margin-top: 3%;
 	border: 10px solid rgb(80, 167, 72);
 	box-sizing: content-box;
 	background: white;
