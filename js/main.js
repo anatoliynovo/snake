@@ -164,16 +164,22 @@ function setSizeCounter() {
 		if (key_state[0] || key_state[1] || key_state[2] || key_state[3]) {
 			display_size = display_size + 1;
 			score = score + 1;
-			$('#size_number').text(display_size);
-			$('#score_number').text(score);
 		}
+
 		// fügt neues Element an Snake hinzu
 		addNewSnakeElement();
 		addNewElementCounter--;
+
+		// Score und Länge aktualisieren
+		$('#size_number').text(display_size);
+		$('#score_number').text(score);
 	}, cycleSpeed);
 }
 
 function moveSnake() {
+	// wenn Head angezeigt wird, Score auf 1 setzen
+	score = 1;
+
 	// den Weg in x und y ablegen, den der Snake läuft
 	path_y.push(snake.position_y);
 	path_x.push(snake.position_x);
@@ -239,7 +245,6 @@ function moveSnake() {
 	}
 
 	console.log('y: ' + snake.position_y, ',  x: ' + snake.position_x);
-	console.log('add new element counter: ' + addNewElementCounter);
 }
 
 function gameProcess() {
@@ -256,7 +261,7 @@ function startCycle() {
 		foodCollision();
 		spawnFood();
 		gameCounter++;
-		if (checkWallCollision()) {
+		if (checkWallCollision() || selfCollision()) {
 			resetCycle();
 			setTimeout(function() {
 				gameOver();
@@ -303,6 +308,22 @@ function foodCollision() {
 		// Länge um 1 inkrementieren, wenn Food berührt wurde
 		display_size = display_size + 1;
 	}
+	// Score und Länge aktualisieren
+	$('#size_number').text(display_size);
+	$('#score_number').text(score);
+}
+
+function selfCollision() {
+	// gibt true bei Kollision mit dem Body vom Snake
+	var isCollided = false;
+
+	$.each(path_x, function(i) {
+		if (snake.position_x == path_x[i] && snake.position_y == path_y[i]) {
+			isCollided = true;
+		}
+	});
+
+	return isCollided;
 }
 
 function checkWallCollision() {
@@ -353,6 +374,10 @@ function gameStart() {
 	key_state[2] = false;
 	key_state[3] = true;
 
+	// Arrays leeren, wenn das Spiel neugestartet wird
+	path_x = [];
+	path_y = [];
+
 	// Score anzeigen
 	$('#score_number').text(score);
 
@@ -360,7 +385,7 @@ function gameStart() {
 	$('#size_number').text(display_size);
 
 	// Head anzeigen
-	$('.columns:nth-child(' + snake.position_x + ') .rows:nth-child(' + snake.position_y + ')').addClass(snake.head);
+	$('.columns:nth-child(' + snake.position_x + ') .rows:nth-child(' + snake.position_y + ')');
 
 	// Spielloop starten
 	gameProcess();
