@@ -149,9 +149,14 @@ function initializeKeyboard() {
 }
 
 function addNewSnakeElement() {
-	$('.columns:nth-child(' + path_y.slice(-1)[0] + ') .rows:nth-child(' + path_x.slice(-1)[0] + ')').addClass(
-		snake.head
-	);
+	var newElement = $(
+		'.columns:nth-child(' +
+			path_y.slice(addNewElementCounter)[0] +
+			') .rows:nth-child(' +
+			path_x.slice(addNewElementCounter)[0] +
+			')'
+	).addClass(snake.head);
+	return newElement;
 }
 
 function setSizeCounter() {
@@ -287,7 +292,12 @@ function foodCollision() {
 	if (currElement.hasClass(food.fclass)) {
 		// Food löschen
 		currElement.removeClass(food.fclass);
-		// Background color auf neutral setzen
+
+		// Food an Snake anhängen
+		addNewSnakeElement();
+		addNewElementCounter--;
+
+		// Background-color auf neutral setzen
 		currElement.css({ background: '' });
 		// 5 Punkte pro Food
 		score = score + 5;
