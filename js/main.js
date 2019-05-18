@@ -259,7 +259,7 @@ function startCycle() {
 		foodCollision();
 		spawnFood();
 		gameCounter++;
-		if (checkWallCollision() || selfCollision()) {
+		if (wallCollision() || selfCollision()) {
 			resetCycle();
 			setTimeout(function () {
 				gameOver();
@@ -328,7 +328,7 @@ function selfCollision() {
 	return isCollided;
 }
 
-function checkWallCollision() {
+function wallCollision() {
 	if (
 		snake.position_y == wall.left ||
 		snake.position_y == wall.bottom ||
