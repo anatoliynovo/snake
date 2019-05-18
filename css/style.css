@@ -148,7 +148,7 @@ body {
 
 .snake_head {
 	background: rgb(185, 185, 185);
-	border: 5px black solid;
+	border: 3px black solid;
 }
 
 .food {

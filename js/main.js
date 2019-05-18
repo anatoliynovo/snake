@@ -271,13 +271,13 @@ function spawnFood() {
 	if (gameCounter % 5 == 0) {
 		var food_x = Math.floor(Math.random() * 29) + 1;
 		var food_y = Math.floor(Math.random() * 29) + 1;
-		var currElement = $('.columns:nth-child(' + food_y + ') .rows:nth-child(' + food_x + ')');
+		var randomElement = $('.columns:nth-child(' + food_y + ') .rows:nth-child(' + food_x + ')');
 
 		// Verschiede Food Farben erzeugen
-		currElement.css({ background: '#' + randomColor });
+		randomElement.css({ background: '#' + randomColor });
 
-		if (!currElement.hasClass('snake_head')) {
-			currElement.addClass(food.fclass);
+		if (!randomElement.hasClass('snake_head')) {
+			randomElement.addClass(food.fclass);
 		}
 	}
 }
@@ -285,8 +285,13 @@ function spawnFood() {
 function foodCollision() {
 	var currElement = $('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')');
 	if (currElement.hasClass(food.fclass)) {
+		// Food löschen
 		currElement.removeClass(food.fclass);
+		// Background color auf neutral setzen
+		currElement.css({ background: '' });
+		// 5 Punkte pro Food
 		score = score + 5;
+		// Länge um 1 inkrementieren, wenn Food berührt wurde
 		display_size = display_size + 1;
 	}
 }
