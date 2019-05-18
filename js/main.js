@@ -17,7 +17,7 @@ var food = {
 	fclass: 'food'
 };
 
-var walls = {
+var wall = {
 	left: 1,
 	top: 31,
 	right: 1,
@@ -41,8 +41,10 @@ var key_down = 40;
 var key_state = [ false, false, false, false ];
 
 // Taktzyklus für Snake
-var cycleTimer;
+var cycleTimer_a;
+var cycleTimer_b;
 var gameCounter = 0; // Basis, zählt bei jedem Takt
+var addNewElementCounter = -1;
 var snakeSpeed = 600; // Geschwindigkeit des Schalangenkopfs
 var cycleSpeed = 3000;
 
@@ -141,9 +143,99 @@ function initializeKeyboard() {
 			}
 			console.log(key_down);
 		}
-		// wenn die Arrow Tasten nicht betätigt wurde, so lassen wie es default ist
+		// wenn die Arrow Tasten nicht betätigt wurden, so lassen wie es auf default ist
 		e.preventDefault();
 	});
+}
+
+function addNewSnakeElement() {
+	$('.columns:nth-child(' + path_y.slice(-1)[0] + ') .rows:nth-child(' + path_x.slice(-1)[0] + ')').addClass(
+		snake.head
+	);
+}
+
+function setSizeCounter() {
+	// Score und Länge-Zähler fangen an zu zählen, wenn einer der Tasten betätigt wurde
+	cycleTimer_b = setInterval(function() {
+		if (key_state[0] || key_state[1] || key_state[2] || key_state[3]) {
+			display_size = display_size + 1;
+			score = score + 1;
+			$('#size_number').text(display_size);
+			$('#score_number').text(score);
+		}
+		// fügt neues Element an Snake hinzu
+		addNewSnakeElement();
+		addNewElementCounter--;
+	}, cycleSpeed);
+}
+
+function moveSnake() {
+	// den Weg in x und y ablegen, den der Snake läuft
+	path_y.push(snake.position_y);
+	path_x.push(snake.position_x);
+
+	// links
+	if (key_state[0]) {
+		snake.position_x = snake.position_x - 1;
+		$('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')').addClass(
+			snake.head
+		);
+		$(
+			'.columns:nth-child(' +
+				path_y.slice(addNewElementCounter)[0] +
+				') .rows:nth-child(' +
+				path_x.slice(addNewElementCounter)[0] +
+				')'
+		).removeClass(snake.head);
+	}
+
+	// oben
+	if (key_state[1]) {
+		snake.position_y = snake.position_y - 1;
+		$('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')').addClass(
+			snake.head
+		);
+		$(
+			'.columns:nth-child(' +
+				path_y.slice(addNewElementCounter)[0] +
+				') .rows:nth-child(' +
+				path_x.slice(addNewElementCounter)[0] +
+				')'
+		).removeClass(snake.head);
+	}
+
+	// rechts
+	if (key_state[2]) {
+		snake.position_x = snake.position_x + 1;
+		$('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')').addClass(
+			snake.head
+		);
+		$(
+			'.columns:nth-child(' +
+				path_y.slice(addNewElementCounter)[0] +
+				') .rows:nth-child(' +
+				path_x.slice(addNewElementCounter)[0] +
+				')'
+		).removeClass(snake.head);
+	}
+
+	// unten
+	if (key_state[3]) {
+		snake.position_y = snake.position_y + 1;
+		$('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')').addClass(
+			snake.head
+		);
+		$(
+			'.columns:nth-child(' +
+				path_y.slice(addNewElementCounter)[0] +
+				') .rows:nth-child(' +
+				path_x.slice(addNewElementCounter)[0] +
+				')'
+		).removeClass(snake.head);
+	}
+
+	console.log('y: ' + snake.position_y, ',  x: ' + snake.position_x);
+	console.log('add new element counter: ' + addNewElementCounter);
 }
 
 function gameProcess() {
@@ -155,12 +247,12 @@ function gameProcess() {
 
 function startCycle() {
 	setSizeCounter();
-	cycleTimer = setInterval(function() {
+	cycleTimer_a = setInterval(function() {
 		moveSnake();
+		foodCollision();
 		spawnFood();
 		gameCounter++;
-		console.log('gameCounter: ', gameCounter);
-		if (check4Collisions()) {
+		if (checkWallCollision()) {
 			resetCycle();
 			setTimeout(function() {
 				gameOver();
@@ -170,72 +262,41 @@ function startCycle() {
 }
 
 function resetCycle() {
-	clearInterval(cycleTimer);
+	clearInterval(cycleTimer_a);
+	clearInterval(cycleTimer_b);
 }
 
-function setSizeCounter() {
-	// Score und Länge-Zähler fangen an zu zählen, wenn einer der Tasten betätigt wurde
-	setInterval(function() {
-		if (key_state[0] || key_state[1] || key_state[2] || key_state[3]) {
-			display_size = display_size + 1;
-			score = score + 1;
-			$('#size_number').text(display_size);
-			$('#score_number').text(score);
+function spawnFood() {
+	var randomColor = Math.floor(Math.random() * 16777215).toString(16);
+	if (gameCounter % 5 == 0) {
+		var food_x = Math.floor(Math.random() * 29) + 1;
+		var food_y = Math.floor(Math.random() * 29) + 1;
+		var currElement = $('.columns:nth-child(' + food_y + ') .rows:nth-child(' + food_x + ')');
+
+		// Verschiede Food Farben erzeugen
+		currElement.css({ background: '#' + randomColor });
+
+		if (!currElement.hasClass('snake_head')) {
+			currElement.addClass(food.fclass);
 		}
-	}, cycleSpeed);
+	}
 }
 
-function moveSnake() {
-	// Tail vom Snake (urspünglicher Head) sichern
-	var snake_tail_x = snake.position_x;
-	var snake_tail_y = snake.position_y;
-
-	path_y.push(snake.position_y);
-	path_x.push(snake.position_x);
-
-	// links
-	if (key_state[0]) {
-		snake.position_x = snake.position_x - 1;
-		$('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')').addClass(
-			snake.head
-		);
+function foodCollision() {
+	var currElement = $('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')');
+	if (currElement.hasClass(food.fclass)) {
+		currElement.removeClass(food.fclass);
+		score = score + 5;
+		display_size = display_size + 1;
 	}
-
-	// oben
-	if (key_state[1]) {
-		snake.position_y = snake.position_y - 1;
-		$('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')').addClass(
-			snake.head
-		);
-	}
-
-	// rechts
-	if (key_state[2]) {
-		snake.position_x = snake.position_x + 1;
-		$('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')').addClass(
-			snake.head
-		);
-	}
-
-	// unten
-	if (key_state[3]) {
-		snake.position_y = snake.position_y + 1;
-		$('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')').addClass(
-			snake.head
-		);
-	}
-
-	console.log('y: ' + snake.position_y, ',  x: ' + snake.position_x);
-	console.log('PATH y: ' + path_y);
-	console.log('PATH x: ' + path_x);
 }
 
-function check4Collisions() {
+function checkWallCollision() {
 	if (
-		snake.position_y == walls.left ||
-		snake.position_y == walls.bottom ||
-		snake.position_x == walls.right ||
-		snake.position_x == walls.key_up
+		snake.position_y == wall.left ||
+		snake.position_y == wall.bottom ||
+		snake.position_x == wall.right ||
+		snake.position_x == wall.up
 	) {
 		snake.available = false;
 		return key_state;
@@ -244,7 +305,7 @@ function check4Collisions() {
 
 function gameOver() {
 	popup.show();
-	$('.rows').removeClass(snake.head, snake.body);
+	addNewElementCounter = -1;
 	// Start-Button wieder aktivieren
 	startButton.prop('disabled', false);
 	startButton.text('RESTART');
@@ -255,29 +316,11 @@ function gameOver() {
 	});
 }
 
-function spawnFood() {
-	if (gameCounter % 5 == 0) {
-		food_x = Math.floor(Math.random() * 29) + 1;
-		food_y = Math.floor(Math.random() * 29) + 1;
-
-		curdiv = $('.columns:nth-child(' + food_y + ') .rows:nth-child(' + food_x + ')');
-
-		if (!curdiv.hasClass('snake_head')) {
-			curdiv.addClass(food.fclass);
-		}
-	}
-}
-
-function foodCollision() {
-	curdiv = $('.columns:nth-child(' + snake.position_x + ') .rows:nth-child(' + snake.position_y + ')');
-
-	if (curdiv.hasClass('food')) {
-		curdiv.removeClass(food.fclass);
-		console.log('FCLASS class deleted!');
-	}
-}
-
 function gameStart() {
+	// Alle Objekte auf der Map entferenn
+	$('.columns .rows').removeClass(food.fclass);
+	$('.columns .rows').removeClass(snake.head);
+
 	// Score- und Laengezaehler auf 0
 	score = 0;
 	display_size = 1;
