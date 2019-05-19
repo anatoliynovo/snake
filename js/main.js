@@ -178,8 +178,6 @@ function setSizeCounter() {
 }
 
 function moveSnake() {
-	// wenn Head angezeigt wird, Score auf 1 setzen
-	score = 1;
 
 	// den Weg in x und y ablegen, den der Snake läuft
 	path_y.push(snake.position_y);
@@ -365,7 +363,7 @@ function gameStart() {
 	});
 
 	// Score- und Laengezaehler auf 0
-	score = 0;
+	score = 1;
 	display_size = 1;
 
 	// Anfangsposition des snake_head festlegen
