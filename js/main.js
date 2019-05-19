@@ -29,23 +29,27 @@ var key = {
 var key_state = [false, false, false, false];
 
 var totalRows = 30; // Gesamtanzahl der Reihen
+var mapSize = totalRows; // der Map Variable übergeben
+
 var score = 0; // Score-Zähler
 var display_size = 0; // Länge-Zähler
 
 var counter = 0; // Zähler für Pixeln (20px)
 var counter_column = 1; // id für columns
 var counter_row = 0; // id für rows
-var mapSize = totalRows;
 
-// Taktzyklus für Snake
+
+// Taktzyklus für Snake und Blink Timer
 var cycleTimer_a;
 var cycleTimer_b;
-var gameCounter = 0; // Basis, zählt bei jedem Takt
-var addNewElementCounter = -1;
-var snakeSpeed = 600; // Geschwindigkeit des Schalangenkopfs
-var cycleSpeed = 3000;
+var blinkTimer;
 
-// der Weg, den der Snake läuft
+var gameCounter = 0; // Basis, zählt bei jedem Takt
+var addNewElementCounter = -1; // Zähler, um den Snake zu veschieben, wenn neues Element eingefügt wird
+var snakeSpeed = 600; // Geschwindigkeit des Schalangenkopfs
+var cycleSpeed = 3000; // Geschwindigkeit des Zykluses 
+
+// den gesamten Weg abspeichern, den der Snake läuft
 var path_y = [];
 var path_x = [];
 
@@ -323,6 +327,7 @@ function selfCollision() {
 	$.each(path_x, function (i) {
 		if (snake.position_x == path_x[i] && snake.position_y == path_y[i]) {
 			isCollided = true;
+			blink();
 		}
 	});
 
@@ -339,6 +344,19 @@ function wallCollision() {
 		snake.available = false;
 		return key_state;
 	}
+}
+
+
+
+function blink() {
+	var frontElement = $('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')');
+	blinkTimer = setInterval(function () {
+		frontElement.toggleClass('blink_animation');
+		frontElement.css({
+			border: '2px black dotted;',
+			background: 'red'
+		});
+	}, 300);
 }
 
 function gameOver() {
@@ -382,6 +400,9 @@ function gameStart() {
 	// Arrays (Länge des Sneaks) leeren, wenn das Spiel neugestartet wird
 	path_x = [];
 	path_y = [];
+
+	// Interval von der blink-Funtion() zurücksetzen
+	clearInterval(blinkTimer);
 
 	// Score anzeigen
 	$('#score_number').text(score);
