@@ -6,6 +6,7 @@
 body {
 	margin: auto;
 	background: black;
+	zoom: 75%;
 }
 
 #titel {
@@ -16,7 +17,7 @@ body {
 	color: white;
 	font-family: 'Gugi', cursive;
 	animation: move 3s;
-	-webkit-animation: move 3s;
+	animation-fill-mode: forwards;
 }
 
 @keyframes move {
@@ -38,7 +39,7 @@ body {
 	display: none;
 	position: absolute;
 	left: 46%;
-	top: 60%;
+	top: 80%;
 	width: 400px;
 	background: #fff;
 	box-shadow: 0 5px 20px 7px rgba(0, 0, 0, .3);
@@ -117,15 +118,15 @@ body {
 	position: relative;
 	height: auto;
 	width: 50%;
-	margin-left: 40%;
+	margin-left: 45%;
 	padding-top: 10%;
 	margin-bottom: -4.5%;
 }
 
 #score {
 	position: absolute;
-	margin-top: 6.5%;
-	margin-left: 37.2%;
+	margin-top: 17.2%;
+	margin-left: 22.5%;
 	text-align: left;
 	color: white;
 	font-size: 25px;
@@ -135,7 +136,7 @@ body {
 #size {
 	position: relative;
 	margin-top: 9%;
-	margin-left: -20%;
+	margin-left: -17%;
 	text-align: center;
 	color: white;
 	font-size: 25px;
