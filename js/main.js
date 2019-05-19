@@ -152,17 +152,6 @@ function initializeKeyboard() {
 	});
 }
 
-function addNewSnakeElement() {
-	var newElement = $(
-		'.columns:nth-child(' +
-		path_y.slice(addNewElementCounter)[0] +
-		') .rows:nth-child(' +
-		path_x.slice(addNewElementCounter)[0] +
-		')'
-	).addClass(snake.head);
-	return newElement;
-}
-
 function setSizeCounter() {
 	// Score und Länge-Zähler fangen an zu zählen, wenn einer der Tasten betätigt wurde
 	cycleTimer_b = setInterval(function () {
@@ -179,6 +168,17 @@ function setSizeCounter() {
 		$('#size_number').text(display_size);
 		$('#score_number').text(score);
 	}, cycleSpeed);
+}
+
+function addNewSnakeElement() {
+	var newElement = $(
+		'.columns:nth-child(' +
+		path_y.slice(addNewElementCounter)[0] +
+		') .rows:nth-child(' +
+		path_x.slice(addNewElementCounter)[0] +
+		')'
+	).addClass(snake.head);
+	return newElement;
 }
 
 function moveSnake() {
