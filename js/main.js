@@ -246,7 +246,7 @@ function moveSnake() {
 	console.log('y: ' + snake.position_y, ',  x: ' + snake.position_x);
 }
 
-function gameProcess() {
+function runningGame() {
 	if (snake.available) {
 		resetCycle();
 		startCycle();
@@ -393,5 +393,5 @@ function gameStart() {
 	$('.columns:nth-child(' + snake.position_x + ') .rows:nth-child(' + snake.position_y + ')');
 
 	// Spielschleife starten
-	gameProcess();
+	runningGame();
 }
