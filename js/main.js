@@ -26,7 +26,7 @@ var key = {
 	right: 39,
 	down: 40
 };
-var key_state = [false, false, false, false];
+var key_state = [ false, false, false, false ];
 
 var totalRows = 30; // Gesamtanzahl der Reihen
 var mapSize = totalRows; // der Map Variable übergeben
@@ -38,7 +38,6 @@ var counter = 0; // Zähler für Pixeln (20px)
 var counter_column = 1; // id für columns
 var counter_row = 0; // id für rows
 
-
 // Taktzyklus für Snake und Blink Timer
 var cycleTimer_a;
 var cycleTimer_b;
@@ -47,7 +46,7 @@ var blinkTimer;
 var gameCounter = 0; // Basis, zählt bei jedem Takt
 var addNewElementCounter = -1; // Zähler, um den Snake zu veschieben, wenn neues Element eingefügt wird
 var snakeSpeed = 600; // Geschwindigkeit des Schalangenkopfs
-var cycleSpeed = 3000; // Geschwindigkeit des Zykluses 
+var cycleSpeed = 3000; // Geschwindigkeit des Zykluses
 
 // den gesamten Weg abspeichern, den der Snake läuft
 var path_y = [];
@@ -65,18 +64,19 @@ $('span').hide();
 $('.start').hide();
 
 // Map erstellen und Tasten einweisen
-$(document).ready(function () {
-	setTimeout(function () {
+$(document).ready(function() {
+	setTimeout(function() {
 		$('.start').fadeIn(1000);
 	}, 2000);
 	createMap();
 	initializeKeyboard();
 	startButton.text('START');
-	startButton.click(function () {
+	startButton.click(function() {
 		// Start-Button deaktivieren nach dem ersten Klick
 		$('.start').prop('disabled', true);
 		// Smooth Scrolling nach ganz unten
-		$('html,body').animate({
+		$('html,body').animate(
+			{
 				scrollTop: $(document).height()
 			},
 			2000
@@ -114,7 +114,7 @@ function createMap() {
 }
 
 function initializeKeyboard() {
-	$(document).keydown(function (e) {
+	$(document).keydown(function(e) {
 		if (e.keyCode == key.left) {
 			key_state[0] = true;
 			key_state[1] = false;
@@ -154,7 +154,7 @@ function initializeKeyboard() {
 
 function setSizeCounter() {
 	// Score und Länge-Zähler fangen an zu zählen, wenn einer der Tasten betätigt wurde
-	cycleTimer_b = setInterval(function () {
+	cycleTimer_b = setInterval(function() {
 		if (key_state[0] || key_state[1] || key_state[2] || key_state[3]) {
 			display_size = display_size + 1;
 			score = score + 1;
@@ -173,17 +173,16 @@ function setSizeCounter() {
 function addNewSnakeElement() {
 	var newElement = $(
 		'.columns:nth-child(' +
-		path_y.slice(addNewElementCounter)[0] +
-		') .rows:nth-child(' +
-		path_x.slice(addNewElementCounter)[0] +
-		')'
+			path_y.slice(addNewElementCounter)[0] +
+			') .rows:nth-child(' +
+			path_x.slice(addNewElementCounter)[0] +
+			')'
 	).addClass(snake.head);
 	return newElement;
 }
 
 function moveSnake() {
-
-	// den Weg in x und y ablegen, den der Snake läuft
+	// den Weg, den der Snake läuft, in x und y ablegen,
 	path_y.push(snake.position_y);
 	path_x.push(snake.position_x);
 
@@ -195,10 +194,10 @@ function moveSnake() {
 		);
 		$(
 			'.columns:nth-child(' +
-			path_y.slice(addNewElementCounter)[0] +
-			') .rows:nth-child(' +
-			path_x.slice(addNewElementCounter)[0] +
-			')'
+				path_y.slice(addNewElementCounter)[0] +
+				') .rows:nth-child(' +
+				path_x.slice(addNewElementCounter)[0] +
+				')'
 		).removeClass(snake.head);
 	}
 
@@ -210,10 +209,10 @@ function moveSnake() {
 		);
 		$(
 			'.columns:nth-child(' +
-			path_y.slice(addNewElementCounter)[0] +
-			') .rows:nth-child(' +
-			path_x.slice(addNewElementCounter)[0] +
-			')'
+				path_y.slice(addNewElementCounter)[0] +
+				') .rows:nth-child(' +
+				path_x.slice(addNewElementCounter)[0] +
+				')'
 		).removeClass(snake.head);
 	}
 
@@ -225,10 +224,10 @@ function moveSnake() {
 		);
 		$(
 			'.columns:nth-child(' +
-			path_y.slice(addNewElementCounter)[0] +
-			') .rows:nth-child(' +
-			path_x.slice(addNewElementCounter)[0] +
-			')'
+				path_y.slice(addNewElementCounter)[0] +
+				') .rows:nth-child(' +
+				path_x.slice(addNewElementCounter)[0] +
+				')'
 		).removeClass(snake.head);
 	}
 
@@ -240,12 +239,18 @@ function moveSnake() {
 		);
 		$(
 			'.columns:nth-child(' +
-			path_y.slice(addNewElementCounter)[0] +
-			') .rows:nth-child(' +
-			path_x.slice(addNewElementCounter)[0] +
-			')'
+				path_y.slice(addNewElementCounter)[0] +
+				') .rows:nth-child(' +
+				path_x.slice(addNewElementCounter)[0] +
+				')'
 		).removeClass(snake.head);
 	}
+
+	// den Weg, den Snake hinterlässt, nach bestimmter Zeit entfernen
+	setTimeout(function() {
+		path_x.splice(0, 1);
+		path_y.splice(0, 1);
+	}, 3000);
 
 	console.log('y: ' + snake.position_y, ',  x: ' + snake.position_x);
 }
@@ -259,14 +264,14 @@ function runningGame() {
 
 function startCycle() {
 	setSizeCounter();
-	cycleTimer_a = setInterval(function () {
+	cycleTimer_a = setInterval(function() {
 		moveSnake();
 		foodCollision();
 		spawnFood();
 		gameCounter++;
 		if (wallCollision() || selfCollision()) {
 			resetCycle();
-			setTimeout(function () {
+			setTimeout(function() {
 				gameOver();
 			}, 300);
 		}
@@ -324,7 +329,7 @@ function selfCollision() {
 	// gibt true bei Kollision mit dem Body vom Snake
 	var isCollided = false;
 
-	$.each(path_x, function (i) {
+	$.each(path_x, function(i) {
 		if (snake.position_x == path_x[i] && snake.position_y == path_y[i]) {
 			isCollided = true;
 			blink();
@@ -346,11 +351,9 @@ function wallCollision() {
 	}
 }
 
-
-
 function blink() {
 	var frontElement = $('.columns:nth-child(' + snake.position_y + ') .rows:nth-child(' + snake.position_x + ')');
-	blinkTimer = setInterval(function () {
+	blinkTimer = setInterval(function() {
 		frontElement.toggleClass('blink_animation');
 		frontElement.css({
 			border: '2px black dotted;',
@@ -365,7 +368,7 @@ function gameOver() {
 	// Start-Button wieder aktivieren
 	startButton.prop('disabled', false);
 	startButton.text('RESTART');
-	startButton.click(function () {
+	startButton.click(function() {
 		popup.hide();
 		startButton.text('START');
 		gameStart();
