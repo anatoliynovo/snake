@@ -152,35 +152,6 @@ function initializeKeyboard() {
 	});
 }
 
-function setSizeCounter() {
-	// Score und Länge-Zähler fangen an zu zählen, wenn einer der Tasten betätigt wurde
-	cycleTimer_b = setInterval(function() {
-		if (key_state[0] || key_state[1] || key_state[2] || key_state[3]) {
-			display_size = display_size + 1;
-			score = score + 1;
-		}
-
-		// fügt neues Element an Snake hinzu
-		addNewSnakeElement();
-		addNewElementCounter--;
-
-		// Score und Länge aktualisieren
-		$('#size_number').text(display_size);
-		$('#score_number').text(score);
-	}, cycleSpeed);
-}
-
-function addNewSnakeElement() {
-	var newElement = $(
-		'.columns:nth-child(' +
-			path_y.slice(addNewElementCounter)[0] +
-			') .rows:nth-child(' +
-			path_x.slice(addNewElementCounter)[0] +
-			')'
-	).addClass(snake.head);
-	return newElement;
-}
-
 function moveSnake() {
 	// den Weg, den der Snake läuft, in x und y ablegen,
 	path_y.push(snake.position_y);
@@ -246,13 +217,42 @@ function moveSnake() {
 		).removeClass(snake.head);
 	}
 
-	// den Weg, den Snake hinterlässt, nach bestimmter Zeit entfernen
-	setTimeout(function() {
-		path_x.splice(0, 1);
-		path_y.splice(0, 1);
-	}, 3000);
-
+	console.log('PATH X: ' + path_x);
+	console.log('PATH Y: ' + path_y);
 	console.log('y: ' + snake.position_y, ',  x: ' + snake.position_x);
+}
+
+function setSizeCounter() {
+	// Score und Länge-Zähler fangen an zu zählen, wenn einer der Tasten betätigt wurde
+	cycleTimer_b = setInterval(function() {
+		if (key_state[0] || key_state[1] || key_state[2] || key_state[3]) {
+			display_size = display_size + 1;
+			score = score + 1;
+		}
+
+		// füg neues Element an Snake hinzu und entferne die, die Snake hinterlassen hat
+		if (addNewSnakeElement()) {
+			path_x.splice(0, 1);
+			path_y.splice(0, 1);
+			addNewSnakeElement();
+			addNewElementCounter--;
+		}
+		// Score und Länge aktualisieren
+		$('#size_number').text(display_size);
+		$('#score_number').text(score);
+	}, cycleSpeed);
+}
+
+function addNewSnakeElement() {
+	var newElement = $(
+		'.columns:nth-child(' +
+			path_y.slice(addNewElementCounter)[0] +
+			') .rows:nth-child(' +
+			path_x.slice(addNewElementCounter)[0] +
+			')'
+	).addClass(snake.head);
+
+	return newElement;
 }
 
 function runningGame() {
@@ -307,9 +307,13 @@ function foodCollision() {
 		// Food löschen
 		currElement.removeClass(food.fclass);
 
-		// Food an Snake anhängen
-		addNewSnakeElement();
-		addNewElementCounter--;
+		// Food an Snake anhängen und entferne die, die Snake hinterlassen hat
+		if (addNewSnakeElement()) {
+			path_x.splice(0, 1);
+			path_y.splice(0, 1);
+			addNewSnakeElement();
+			addNewElementCounter--;
+		}
 
 		// Background-color auf blank setzen
 		currElement.css({
