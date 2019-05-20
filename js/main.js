@@ -284,8 +284,10 @@ function resetCycle() {
 }
 
 function spawnFood() {
+	// verschiedene Farben erzeugen
 	var randomColor = Math.floor(Math.random() * 16777215).toString(16);
-	if (gameCounter % 5 == 0) {
+	// im
+	if (gameCounter % 20 == 0) {
 		var food_x = Math.floor(Math.random() * 29) + 1;
 		var food_y = Math.floor(Math.random() * 29) + 1;
 		var randomElement = $('.columns:nth-child(' + food_y + ') .rows:nth-child(' + food_x + ')');
