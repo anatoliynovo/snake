@@ -1,1 +1,3 @@
-# Snake Game in Javascript
+# Snake - build with Javascript
+
+Classic snake game that everyone knows
